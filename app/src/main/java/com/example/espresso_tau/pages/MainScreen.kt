@@ -19,10 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.espresso_tau.MyState
+import com.example.espresso_tau.SessionCacheImp
+import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Sample(navController: NavController){
+
+fun Sample(navController: NavController) {
     var title by remember {
         mutableStateOf("")
     }
@@ -38,23 +41,25 @@ fun Sample(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Log.e("omer", "start is ${state.newTitle} and state title is ${state.title}")
-newTitle //todo newTitle needs to be removed
-        Text(text =  state.newTitle )
+       // newTitle //todo newTitle needs to be removed
+        Text(text = state.newTitle)
         OutlinedTextField(
             value = title,
             onValueChange = { text ->
                 title = text
-                state.title =text
+                state.title = text
 
-               // Log.e("omer", "text is $text and state title is ${state.title}")
+                // Log.e("omer", "text is $text and state title is ${state.title}")
             })
         Button(onClick = {
-          //  Log.e("omer", "before is ${state.newTitle} and state title is ${state.title}")
+            //  Log.e("omer", "before is ${state.newTitle} and state title is ${state.title}")
             newTitle = title
-            title=""
+            title = ""
             state.newTitle = state.title
-            state.title="" // todo why is not working
+            state.title = "" // todo why is not working
             //Log.e("omer", "after is ${state.newTitle} and state title is ${state.title}")
+            navController.previousBackStackEntry?.savedStateHandle?.set("state", "state: $state title " )
+
         }) {
             Text(text = "Change Text")
         }
